@@ -1,4 +1,12 @@
-# Scrip para ler dados de sst e plotar os mapas com médias mensais e anuais
+Este repositório contém scripts para leitura de dados de Temperatura da Superfície do Mar (SST) e geraçã
+
+
+
+
+
+
+
+# Script para ler dados de sst e plotar os mapas com médias mensais e anuais
 
 fonte de dados:
 https://psl.noaa.gov/data/gridded/data.noaa.oisst.v2.html
