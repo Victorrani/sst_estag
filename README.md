@@ -15,19 +15,19 @@ Este repositório contém scripts para leitura de dados de **Temperatura da Supe
 README.md      # Descrição do projeto  
 ```
 
-## 🚀 Como Usar
+## Como Usar
 1. Baixe os dados de SST e coloque na pasta `/dados`.
 1.1 O dado utilizado pode ser encontrado aqui: https://psl.noaa.gov/data/gridded/data.noaa.oisst.v2.highres.html
+-> https://downloads.psl.noaa.gov/Datasets/noaa.oisst.v2.highres/sst.mon.mean.nc
 1.2 Descrição:
 Monthly values from 1981/09 to 2025/04
 0.25 degree latitude x 0.25 degree longitude global grid (1440x720)
 89.875S - 89.875N,0.125E to 359.875E
-nome do arquivo: sst.mon.mean.nc
-
 
 2. Execute o script principal:  
    ```bash
    python scripts/plot_sst.py
    ```  
-3. As figuras serão salvas na pasta `/figuras`.  
+ 
+
 
