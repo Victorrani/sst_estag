@@ -16,10 +16,13 @@ DIRFIGS = '/p1-chima/victor/sst_estag/figs/south_pole_imgs/'
 
 # dado completo bruto
 ds_sst = xr.open_dataset(DIRDADO, engine="netcdf4")
-
 num_tempos = len(ds_sst.time.values)
-
+ds_sst.close()
 for i in range(0, num_tempos):
+
+    ds_sst = xr.open_dataset(DIRDADO, engine="netcdf4")
+
+    num_tempos = len(ds_sst.time.values)
     sst = ds_sst['sst'].isel(time=i).load()
     sst_lat = ds_sst['lat']
     sst_lon = ds_sst['lon']
@@ -56,15 +59,16 @@ for i in range(0, num_tempos):
 
     img1 = sst.plot.contourf(ax=ax, levels=levels, transform=ccrs.PlateCarree(), cmap='turbo', add_colorbar=False, extend='both')
 
-    plt.title(f'Média mensal da temperatura da superfície do mar (°C)\nProjeção polar (Hemisfério Sul)\nNOAA OI SST V2 High Resolution 0.25°x0.25°\n{tempo1}')
+    plt.title(f'Média mensal da temperatura da superfície do mar (°C)\nProjeção polar (Hemisfério Sul)\nNOAA OI SST V2 High Resolution 0.25° x 0.25°\n{tempo1}')
     cax_ = fig.add_axes([0.92, 0.2, 0.03, 0.6])
 
-    cbar = fig.colorbar(img1, cax=cax_, orientation='vertical', shrink=0.8, pad=0.05, label = "Temperatura da Superfície do Mar (°C)", ticks=np.arange(-2, 36, 2))  
+    cbar = fig.colorbar(img1, cax=cax_, orientation='vertical', shrink=0.8, pad=0.05, label = "Temperatura da Superfície do Mar (°C)", ticks=np.arange(-2, 36, 4))  
 
     ax.gridlines()
 
-    plt.savefig(f"{DIRFIGS}south_pole_sst_{tempo1}.jpg", dpi=100, bbox_inches='tight')
+    plt.savefig(f"{DIRFIGS}south_pole_sst_{tempo1}.jpg", dpi=90, bbox_inches='tight')
     plt.close()
     del fig, ax, img1  # Remove objetos da memória
+    ds_sst.close()
 ds_sst.close()
 

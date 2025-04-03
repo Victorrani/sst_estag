@@ -11,8 +11,8 @@ import warnings
 warnings.simplefilter("ignore", UserWarning)
 
 
-DIRDADO = '/p1-chima/victor/estagio/dados/sst.mnmean.nc'
-DIRFIGS = '/p1-chima/victor/estagio/figs/sst_global/'
+DIRDADO = '/p1-chima/victor/estagio/dados/sst.mon.mean.nc'
+DIRFIGS = '/p1-chima/victor/sst_estag/figs/sst_regional/'
 
 # dado completo bruto
 ds_sst = xr.open_dataset(DIRDADO)
@@ -21,9 +21,6 @@ ds_sst = ds_sst.assign_coords(lon=(((ds_sst.lon + 180) % 360) - 180)).sortby("lo
 num_tempos = len(ds_sst.time.values)
 sst_lat = ds_sst['lat'] 
 sst_lon = ds_sst['lon']
-
-
-
 
 for i in range(0, num_tempos):
 
@@ -52,10 +49,10 @@ for i in range(0, num_tempos):
     )
     ax.add_feature(land)
     
-    levels= np.arange(-2, 34, 2)
+    levels= np.arange(-2, 34, 0.5)
     img1 = ax.contourf(sst_lon, sst_lat, sst, levels=levels, transform=ccrs.PlateCarree(), cmap='turbo', extend='both')
     
-    plt.title(f'Média mensal da temperatura da superfície do mar (°C) {tempo1}')
+    plt.title(f'Média mensal da temperatura da superfície do mar (°C) {tempo1}\nNOAA OI SST V2 High Resolution 0.25° x 0.25°')
     gl = ax.gridlines(crs=ccrs.PlateCarree(), color='black',
                       alpha=1.0, linestyle='--', linewidth=0.4,
                       xlocs=np.arange(-180, 181, 30),  # Ajustar intervalo de longitude conforme necessário
@@ -69,7 +66,7 @@ for i in range(0, num_tempos):
     cbar = fig.colorbar(img1, cax=cax_, orientation='vertical', shrink=0.8, pad=0.05, label = "Temperatura da Superfície do Mar (°C)", ticks=np.arange(-2, 34, 2))
 
 
-    plt.savefig(f"{DIRFIGS}/global_sst_{tempo1}.png", dpi=100, bbox_inches='tight')
+    plt.savefig(f"{DIRFIGS}global_sst_{tempo1}.png", dpi=100, bbox_inches='tight')
     plt.close()
 
 
