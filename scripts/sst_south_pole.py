@@ -11,18 +11,19 @@ import warnings
 warnings.simplefilter("ignore", UserWarning)
 
 
-DIRDADO = '/p1-chima/victor/estagio/dados/sst.mnmean.nc'
-DIRFIGS = '/p1-chima/victor/estagio/figs/south_pole_imgs/'
+DIRDADO = '/p1-chima/victor/estagio/dados/sst.mon.mean.nc'
+DIRFIGS = '/p1-chima/victor/sst_estag/figs/south_pole_imgs/'
 
 # dado completo bruto
-ds_sst = xr.open_dataset(DIRDADO)
+ds_sst = xr.open_dataset(DIRDADO, engine="netcdf4")
 
 num_tempos = len(ds_sst.time.values)
 
 for i in range(0, num_tempos):
-    sst = ds_sst['sst'].isel(time=i)
+    sst = ds_sst['sst'].isel(time=i).load()
     sst_lat = ds_sst['lat']
     sst_lon = ds_sst['lon']
+    ds_sst = ds_sst.assign_coords(lon=(((ds_sst.lon + 180) % 360) - 180)).sortby("lon")
 
 
     tempo = pd.to_datetime(sst.time.values)
@@ -51,18 +52,19 @@ for i in range(0, num_tempos):
         edgecolor='black', facecolor='.2'
     )
     ax.add_feature(land)
-    levels= np.arange(-2, 34, 2)
+    levels= np.arange(-2, 36, 2)
 
     img1 = sst.plot.contourf(ax=ax, levels=levels, transform=ccrs.PlateCarree(), cmap='turbo', add_colorbar=False, extend='both')
 
-    plt.title(f'Média mensal da temperatura da superfície do mar (°C)\nProjeção polar (Hemisfério Sul)\n{tempo1}')
+    plt.title(f'Média mensal da temperatura da superfície do mar (°C)\nProjeção polar (Hemisfério Sul)\nNOAA OI SST V2 High Resolution 0.25°x0.25°\n{tempo1}')
     cax_ = fig.add_axes([0.92, 0.2, 0.03, 0.6])
 
-    cbar = fig.colorbar(img1, cax=cax_, orientation='vertical', shrink=0.8, pad=0.05, label = "Temperatura da Superfície do Mar (°C)", ticks=np.arange(-2, 34, 2))  
+    cbar = fig.colorbar(img1, cax=cax_, orientation='vertical', shrink=0.8, pad=0.05, label = "Temperatura da Superfície do Mar (°C)", ticks=np.arange(-2, 36, 2))  
 
     ax.gridlines()
 
-    plt.savefig(f"{DIRFIGS}/south_pole_sst_{tempo1}.png", dpi=100, bbox_inches='tight')
+    plt.savefig(f"{DIRFIGS}south_pole_sst_{tempo1}.jpg", dpi=100, bbox_inches='tight')
     plt.close()
-
+    del fig, ax, img1  # Remove objetos da memória
+ds_sst.close()
 
