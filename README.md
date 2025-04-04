@@ -42,4 +42,5 @@ Monthly values from 1981/09 to 2025/04
 ├── 📂 figs/ → Pasta para salvar imagens e resultados finais.
 ├── 📜 README.md → Explicação do repositório.
 
+conda env create -f environment.yml -n sst
 
