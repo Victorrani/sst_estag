@@ -29,18 +29,17 @@ Monthly values from 1981/09 to 2025/04
    python scripts/plot_sst.py
    ```  
    
-📂 repo_sst/
-├── 📜 main.py → Script principal que chama as funções na ordem correta.
-├── 📜 config.yaml → Arquivo de configuração para parametrizar caminhos, datas, etc.
+📂 sst_estag/
+├── 📜 sst.py → Script principal que chama as funções na ordem correta.
+├── 📜 config.yaml → Arquivo de configuração para ambiente Anaconda.
 ├── 📂 scripts/
-│ ├── 📜 download_sst.py → Função para baixar os dados.
-│ ├── 📜 processamento.py → Tratamento dos dados brutos.
-│ ├── 📜 visualizacao.py → Geração de imagens.
-├── 📂 utils/
-│ ├── 📜 funcoes.py → Funções auxiliares usadas em vários scripts.
+│ ├── 📜 sst_download.py → Função para baixar os dados.
+│ ├── 📜 sst_process.py → Tratamento dos dados brutos.
+│ ├── 📜 sst_plot_polar.py → Geração de imagens em projeção polar.
+│ ├── 📜 sst_plot_global.py → Geração de imagens para visão global.
+│ ├── 📜 sst_plot_regional.py → Geração de imagens para regiões específicas.
 ├── 📂 data/ → Pasta onde os dados baixados serão armazenados.
-├── 📂 output/ → Pasta para salvar imagens e resultados finais.
+├── 📂 figs/ → Pasta para salvar imagens e resultados finais.
 ├── 📜 README.md → Explicação do repositório.
- 
 
 
