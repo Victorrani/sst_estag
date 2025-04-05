@@ -36,7 +36,7 @@ Este repositório contém scripts para leitura, processamento e visualização d
 
 Esse script (`sst.py`) executa automaticamente todas as etapas: **download dos dados, processamento e geração dos mapas**.
 
-> Alternativamente, os scripts localizados no diretório `scripts/` podem ser executados individualmente, conforme necessidade.
+> Alternativamente, os scripts localizados no diretório `scripts/` podem ser executados individualmente, conforme necessidade (não se esqueça de descomentar as linhas finais de cada script).
 
 ---
 
