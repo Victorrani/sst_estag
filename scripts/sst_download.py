@@ -3,42 +3,63 @@ import wget
 import logging
 import time
 
-################################
-#         sst_download.py      #
-################################
+#############################################
+#              sst_download.py              #
+#-------------------------------------------#
+# Script para baixar dados mensais de SST   #
+# NOAA OISST V2 HighRes                     #
+#############################################
 
-# Diretórios e nome do arquivo
-DIR_DADOS = "/p1-chima/victor/sst_estag/dados/"
+# Diretório do script
+DIR_SCRIPTS = os.path.dirname(os.path.abspath(__file__))
+print(f"[INFO] Diretório do script: {DIR_SCRIPTS}")
+
+# Diretório base do projeto (sst_estag)
+DIR_BASE = os.path.dirname(DIR_SCRIPTS)
+print(f"[INFO] Diretório base do projeto: {DIR_BASE}")
+
+# Criando diretórios principais do projeto
+name_dir = ['logs', 'dados', 'figs']
+
+print("\n[INFO] Verificando/criando diretórios necessários:")
+for dir_name in name_dir:
+    caminho = os.path.join(DIR_BASE, dir_name)
+    if os.path.exists(caminho):
+        print(f"Diretório já existe: {caminho}")
+    else:
+        os.makedirs(caminho)
+        print(f"Diretório criado: {caminho}")
+
+# Arquivo, URL e caminhos de log/dados
 ARQ_FILE = "sst.mon.mean.nc"
 DOWNLOAD_URL = "https://downloads.psl.noaa.gov/Datasets/noaa.oisst.v2.highres/sst.mon.mean.nc"
-LOG_FILE = "/p1-chima/victor/sst_estag/logs/sst_download.log"
+LOG_FILE = os.path.join(DIR_BASE, 'logs', 'sst_download.log')
+DIR_DADOS = os.path.join(DIR_BASE, 'dados')
 
-# Criando diretório de logs (se não existir)
-os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
-
-# Configuração do logging
+# Configurando o log
 logging.basicConfig(
     filename=LOG_FILE,
-    level=logging.INFO,  # Registra INFO, WARNING e ERROR
+    level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S"
 )
 
 # Função para baixar os dados
 def download_sst_data():
-    start_time = time.time()  # Tempo inicial
-
-    os.makedirs(DIR_DADOS, exist_ok=True)
+    start_time = time.time()
     caminho_arquivo = os.path.join(DIR_DADOS, ARQ_FILE)
 
-    logging.info("Verificando a existência do dado...")
+    logging.info("Verificando a existência do dado SST.")
+    print("\n[INFO] Verificando se o arquivo já existe...")
 
     if os.path.isfile(caminho_arquivo):
-        logging.info(f"Arquivo já existe: {caminho_arquivo}")
-        print(f"Arquivo já existe: {caminho_arquivo}")
+        msg = f"Arquivo já existe: {caminho_arquivo}"
+        logging.info(msg)
+        print(f"{msg}")
     else:
-        logging.info("Arquivo não encontrado. Iniciando download...")
-        print("Arquivo não encontrado. Iniciando download...")
+        msg = "Arquivo não encontrado. Iniciando download..."
+        logging.info(msg)
+        print(f" {msg}")
         try:
             wget.download(DOWNLOAD_URL, caminho_arquivo)
             logging.info(f"Download concluído: {caminho_arquivo}")
@@ -47,9 +68,12 @@ def download_sst_data():
             logging.error(f"Erro ao baixar o arquivo: {e}")
             print(f"\nErro ao baixar o arquivo: {e}")
 
-    # Tempo final
-    end_time = time.time()
-    elapsed_time = end_time - start_time
-    logging.info(f"Tempo de execução: {elapsed_time:.2f} segundos")
-    print(f"Tempo de execução: {elapsed_time:.2f} segundos")
+    elapsed_time = time.time() - start_time
+    logging.info(f"Tempo total de execução: {elapsed_time:.2f} segundos")
+    print(f"\n[INFO] Tempo total de execução: {elapsed_time:.2f} segundos")
 
+# Caso queira rodar esse script individualmente descomente as linhas abaixo
+# if __name__ == "__main__":
+#     # Executa a função de download
+#     print("\n[INFO] Iniciando o download do arquivo SST...")
+#     download_sst_data()
