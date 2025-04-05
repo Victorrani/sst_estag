@@ -19,7 +19,7 @@ Este repositório contém scripts para leitura, processamento e visualização d
 
 1. Clone este repositório:
    ```bash
-   git clone https://github.com/seu-usuario/sst_estag.git
+   git clone https://github.com/Victorrani/sst_estag.git
    cd sst_estag
    ```
 
