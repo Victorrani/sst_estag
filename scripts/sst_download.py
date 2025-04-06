@@ -59,7 +59,7 @@ def download_sst_data():
     else:
         msg = "Arquivo não encontrado. Iniciando download..."
         logging.info(msg)
-        print(f" {msg}")
+        print(f"{msg}")
         try:
             wget.download(DOWNLOAD_URL, caminho_arquivo)
             logging.info(f"Download concluído: {caminho_arquivo}")
@@ -69,8 +69,11 @@ def download_sst_data():
             print(f"\nErro ao baixar o arquivo: {e}")
 
     elapsed_time = time.time() - start_time
-    logging.info(f"Tempo total de execução: {elapsed_time:.2f} segundos")
-    print(f"\n[INFO] Tempo total de execução: {elapsed_time:.2f} segundos")
+    minutos = int(elapsed_time // 60)
+    segundos = int(elapsed_time % 60)
+
+    logging.info(f"Tempo total de execução do Download: {minutos} min {segundos} s")
+    print(f"\n[INFO] Tempo total de execução do Download: {minutos} min {segundos} s")
 
 # Caso queira rodar esse script individualmente descomente as linhas abaixo
 # if __name__ == "__main__":
