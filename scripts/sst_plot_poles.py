@@ -8,6 +8,7 @@ import matplotlib.path as mpath
 import pandas as pd
 import warnings
 import os
+import logging
 
 warnings.simplefilter("ignore", UserWarning)
 
@@ -17,6 +18,18 @@ ARQ_SST_MENSAL = os.path.join(DIR_BASE, "dados", "sst_media_mensal.nc")
 ARQ_SST_ANUAL = os.path.join(DIR_BASE, "dados", "sst_media_anual.nc")
 DIRFIGS = os.path.join(DIR_BASE, "figs")
 DIR_POLAR = os.path.join(DIR_BASE, "figs", "polar")
+
+
+
+# Configurar o log
+log_path = os.path.join(DIR_BASE,'logs' ,"sst_plot_polar.log")
+logging.basicConfig(
+    filename=log_path,
+    filemode='w',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
 
 
 def plot_polar_sst():
@@ -31,20 +44,21 @@ def plot_polar_sst():
     ds_sst_mensal = xr.open_dataset(ARQ_SST_MENSAL, engine="netcdf4")
     num_tempos = len(ds_sst_mensal.month.values)
     
-    
+    logging.info(f"Iniciando o plot com projeção global")
     for i, mes in enumerate(ds_sst_mensal.month.values):
         sst = ds_sst_mensal['sst'].isel(month=i).load()
     
 
         sst_lat = ds_sst_mensal['lat']
         sst_lon = ds_sst_mensal['lon']
-        #ds_sst_sst = ds_sst_mensal.assign_coords(lon=(((ds_sst_mensal.lon + 180) % 360) - 180)).sortby("lon")
+        
     
     
         tempo = pd.Timestamp(f"2000-{int(mes):02d}-01")
         tempo1 = tempo.strftime("%m")
         
         print(f"Fazendo para o tempo: {tempo.strftime('%m')}, {i}")
+        logging.info(f"Fazendo para o tempo: {tempo.strftime('%m')}, {i}")
     
         fig = plt.figure(figsize=[10, 5])
         ax1 = fig.add_subplot(1, 2, 1, projection=ccrs.SouthPolarStereo())
