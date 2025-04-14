@@ -3,15 +3,20 @@ import logging
 
 
 
-# Diretório do script
-DIR_SCRIPTS = os.path.dirname(os.path.abspath(__file__))
-
-
-# Diretório base do projeto (sst_estag)
-DIR_BASE = os.path.dirname(DIR_SCRIPTS)
 
 
 def config_dirs():
+    """
+    Função para configurar os diretórios do projeto.
+    Cria diretórios principais: logs, dados e figs.
+    """
+
+    # Diretório do script
+    DIR_SCRIPTS = os.path.dirname(os.path.abspath(__file__))
+
+    # Diretório base do projeto (sst_estag)
+    DIR_BASE = os.path.dirname(DIR_SCRIPTS)
+
     # Diretório do script
     DIR_SCRIPTS = os.path.dirname(os.path.abspath(__file__))
     
@@ -30,9 +35,10 @@ def config_dirs():
             os.makedirs(caminho)
             print(f"Diretório criado: {caminho}")
 
-if __name__ == "__main__":
-    # Executa a função de download
+
+# Caso queira rodar esse script individualmente descomente as linhas abaixo
+#if __name__ == "__main__":
     #print("\n[INFO] Criando os diretórios se necessário...")
-    config_dirs()
+    #config_dirs()
 
     
