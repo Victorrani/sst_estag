@@ -30,12 +30,14 @@ def download_sst_data():
     DIR_DADOS = os.path.join(DIR_BASE, 'dados')
     
     # Configurando o log
+    
     logging.basicConfig(
         filename=LOG_FILE,
+        filemode='a',
         level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S"
+        format='%(asctime)s - %(levelname)s - %(message)s'
     )
+    logging.info("Iniciando a criação das imagens com projeção polar dos dados de SST")
 
     start_time = time.time()
     caminho_arquivo = os.path.join(DIR_DADOS, ARQ_FILE)

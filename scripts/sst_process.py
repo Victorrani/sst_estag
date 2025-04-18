@@ -23,23 +23,22 @@ def process_sst_data():
     DIR_SAIDA = os.path.join(DIR_BASE, "dados")
     LOG_FILE = os.path.join(DIR_BASE, "logs", "sst_process.log")
 
-    # Logger
-    logger = logging.getLogger("sst_process_logger")
-    logger.setLevel(logging.INFO)
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+    logging.basicConfig(
+        filename=LOG_FILE,
+        filemode='a',
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s'
+    )
 
-    if not logger.handlers:
-        handler = logging.FileHandler(LOG_FILE)
-        formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s", "%Y-%m-%d %H:%M:%S")
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-
-    logger.info("Iniciando o processamento dos dados de SST")
+    logging.info("Iniciando o processamento dos dados de SST")
 
     try:
         # Verificação de existência e tamanho do arquivo
         if not os.path.isfile(ARQ_SST):
             msg = f"Arquivo não encontrado: {ARQ_SST}"
-            logger.error(msg)
+            logging.error(msg)
             print(f"[ERRO] {msg}")
             return
 
@@ -48,15 +47,15 @@ def process_sst_data():
 
         if tamanho_gb < 2:
             msg = f"Arquivo encontrado, mas tem apenas {tamanho_gb:.2f} GB. Tamanho esperado: ≥ 2 GB."
-            logger.error(msg)
+            logging.error(msg)
             print(f"[ERRO] {msg}")
             return
 
-        logger.info(f"Arquivo encontrado com {tamanho_gb:.2f} GB: {ARQ_SST}")
+        logging.info(f"Arquivo encontrado com {tamanho_gb:.2f} GB: {ARQ_SST}")
         print(f"[INFO] Arquivo OK: {ARQ_SST} ({tamanho_gb:.2f} GB)")
 
         # Lendo o dataset
-        logger.info(f"Lendo arquivo: {ARQ_SST}")
+        logging.info(f"Lendo arquivo: {ARQ_SST}")
         ds_sst = xr.open_dataset(ARQ_SST)
 
         # Pegando a variável SST
@@ -71,10 +70,10 @@ def process_sst_data():
         valor_max = float(var_sst.max().values)
 
         # Log e print das informações
-        logger.info(f"Nome da variável: {nome_variavel}")
-        logger.info(f"Unidade: {unidade}")
-        logger.info(f"Valor mínimo: {valor_min:.2f}")
-        logger.info(f"Valor máximo: {valor_max:.2f}")
+        logging.info(f"Nome da variável: {nome_variavel}")
+        logging.info(f"Unidade: {unidade}")
+        logging.info(f"Valor mínimo: {valor_min:.2f}")
+        logging.info(f"Valor máximo: {valor_max:.2f}")
 
         print("\n[INFO] Informações do arquivo SST:")
         print(f"→ Variável: {nome_variavel}")
@@ -83,11 +82,11 @@ def process_sst_data():
         print(f"→ Valor máximo: {valor_max:.2f}")
 
         # Média global anual
-        logger.info("Calculando média anual")
+        logging.info("Calculando média anual")
         sst_media_anual = ds_sst["sst"].groupby("time.year").mean(dim="time")
 
         # Média climatológica mensal
-        logger.info("Calculando média mensal")
+        logging.info("Calculando média mensal")
         sst_media_mensal = ds_sst["sst"].groupby("time.month").mean(dim="time")
 
         # Salvando os arquivos
@@ -95,17 +94,17 @@ def process_sst_data():
         saida_mensal = os.path.join(DIR_SAIDA, "sst_media_mensal.nc")
 
         sst_media_anual.to_netcdf(saida_anual)
-        logger.info(f"Média anual salva em: {saida_anual}")
+        logging.info(f"Média anual salva em: {saida_anual}")
 
         sst_media_mensal.to_netcdf(saida_mensal)
-        logger.info(f"Média mensal salva em: {saida_mensal}")
+        logging.info(f"Média mensal salva em: {saida_mensal}")
 
-        logger.info("Processamento concluído com sucesso!")
+        logging.info("Processamento concluído com sucesso!")
 
         ds_sst.close()
 
     except Exception as e:
-        logger.error(f"Erro durante o processamento: {e}")
+        logging.error(f"Erro durante o processamento: {e}")
         print(f"[ERRO] {e}")
 
 # Caso queira rodar esse script individualmente descomente as linhas abaixo
