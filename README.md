@@ -5,13 +5,12 @@ Este repositório contém scripts para leitura, processamento e visualização d
 ---
 
 ## Funcionalidades
-
+- Preparação dos diretórios necessários
 - Leitura de arquivos SST no formato NetCDF  
 - Cálculo de médias mensais e anuais  
 - Geração de mapas com diferentes projeções:
   - Projeção polar
-  - Visão global
-  - Visão regional
+  - Projeção regional (podendo ser alterado de acordo com a necessidade)
 
 ---
 
@@ -34,7 +33,7 @@ Este repositório contém scripts para leitura, processamento e visualização d
    python sst.py
    ```
 
-Esse script (`sst.py`) executa automaticamente todas as etapas: **download dos dados, processamento e geração dos mapas**.
+O script (`sst.py`) executa automaticamente todas as etapas: **download dos dados, processamento e geração dos mapas**.
 
 > Alternativamente, os scripts localizados no diretório `scripts/` podem ser executados individualmente, conforme necessidade (não se esqueça de descomentar as linhas finais de cada script).
 
@@ -57,16 +56,23 @@ Esse script (`sst.py`) executa automaticamente todas as etapas: **download dos d
 
 ```
 sst_estag/
-├── sst.py               # Script principal que executa todo o fluxo (download, processamento e plotagem)
-├── environment.yml      # Arquivo de configuração para ambiente Conda
-├── scripts/             # Scripts individuais para cada etapa
-│   ├── sst_download.py       # Script para baixar os dados
-│   ├── sst_process.py        # Processamento e cálculo de médias
-│   ├── sst_plot_polar.py     # Geração de mapas com projeção polar
-│   ├── sst_plot_global.py    # Geração de mapas com visão global
-│   ├── sst_plot_regional.py  # Geração de mapas para regiões específicas
-├── dados/              # Pasta onde os dados de SST serão armazenados
-├── figs/               # Imagens geradas pelos scripts
-├── logs/               # Arquivos de log com histórico das execuções
-└── README.md           # Explicação do projeto
+├── sst.py                   # Script principal que executa todo o fluxo (download, processamento, plotagem)
+├── environment.yml          # Arquivo de configuração para ambiente Conda
+├── scripts/                 # Scripts individuais para cada etapa do fluxo
+│   ├── sst_config_dirs.py      # Configura os diretórios do projeto
+│   ├── sst_download.py         # Script para download dos dados de SST
+│   ├── sst_process.py          # Processamento dos dados e cálculo de médias (mensal/anual)
+│   ├── sst_plot_poles.py       # Geração de mapas com projeção polar (hemisférios Norte e Sul)
+│   ├── sst_plot_reg.py         # Geração de mapas para regiões específicas (ex: Atlântico, Pacífico etc.)
+│   ├── sst_gifs.py             # Criação de GIFs animados com as imagens geradas
+├── dados/                  # Pasta onde os dados de SST são armazenados
+├── figs/                   # Imagens geradas pelos scripts
+│   ├── polar/
+│   │   ├── mensal/
+│   │   └── anual/
+│   ├── regional/
+│   │   ├── mensal/
+│   │   └── anual/
+├── logs/                   # Arquivos de log com histórico das execuções
+└── README.md               # Explicação do projeto e instruções de uso
 ```
